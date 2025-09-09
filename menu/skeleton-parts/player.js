@@ -722,6 +722,10 @@ extension.skeleton.main.layers.section.player.on.click = {
 				}
 			}
 		},
+		disable_auto_dubbing: {
+			component: 'switch',
+			text: 'disableAutoDubbing'
+		},
 		player_quality: {
 			component: 'select',
 			text: 'quality',
@@ -1158,6 +1162,11 @@ extension.skeleton.main.layers.section.player.on.click = {
 			component: 'section',
 			variant: 'card',
 			title: 'extraButtonsBelowThePlayer',
+			below_player_keyscene: {
+				component: 'switch',
+				text: 'keyScene',
+				value: true
+			},
 			below_player_screenshot: {
 				component: 'switch',
 				text: 'screenshot',
@@ -1176,8 +1185,14 @@ extension.skeleton.main.layers.section.player.on.click = {
 			copy_video_id: {
 				component: 'switch',
 				text: 'copyVideoId',
+				id: "copy-video-id",
 				value: false
-			}
+			},
+			copy_video_url: {
+				component: 'switch',
+				text: 'copyVideoUrl',
+				value: false
+			},
 		},
 		extraRightControlButtons: {
 			component: 'section',
@@ -1198,10 +1213,6 @@ extension.skeleton.main.layers.section.player.on.click = {
 			on: {
 				click: 'main.layers.section.appearance.on.click.player.on.click.player_hide_controls_options.on.click'
 			}
-		},
-		disable_auto_dubbing: {
-			component: 'switch',
-			text: 'disableAutoDubbing'
 		}
 	}
 };

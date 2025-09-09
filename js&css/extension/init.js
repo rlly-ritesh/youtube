@@ -10,6 +10,8 @@ window.addEventListener('yt-navigate-finish', function () {
 
 	extension.features.trackWatchedVideos();
 	extension.features.thumbnailsQuality();
+	extension.features.stickyNavigation();
+	extension.features.hideSponsoredVideosOnHome?.();
 });
 
 extension.messages.create();
@@ -44,9 +46,11 @@ extension.events.on('init', function () {
 	extension.features.disableThumbnailPlayback();
 	extension.features.markWatchedVideos();
 	extension.features.relatedVideos();
+	extension.features.stickyNavigation();
 	extension.features.comments();
 	extension.features.openNewTab();
-	extension.features.removeListParamOnNewTab();	
+	extension.features.removeListParamOnNewTab();
+	// extension.features.hideSponsoredVideosOnHome?.();	
 	bodyReady();
 });
 
@@ -69,6 +73,7 @@ extension.inject([
 	'/js&css/web-accessible/www.youtube.com/shortcuts.js',
 	'/js&css/web-accessible/www.youtube.com/blocklist.js',
 	'/js&css/web-accessible/www.youtube.com/settings.js',
+	'/js&css/web-accessible/www.youtube.com/last-watched-overlay.js',  // Neue Zeile hinzufügen
 	'/js&css/web-accessible/init.js'
 ], function () {
 	extension.ready = true;

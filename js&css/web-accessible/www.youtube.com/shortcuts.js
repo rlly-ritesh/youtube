@@ -138,6 +138,8 @@ ImprovedTube.shortcutsListeners = {
 		ImprovedTube.input.pressed.shift = false;
 	}
 };
+/*--- jump To Key Scene ----*/
+ImprovedTube.shortcutJumpToKeyScene = ImprovedTube.jumpToKeyScene;
 /*------------------------------------------------------------------------------
 Ambient lighting
 ------------------------------------------------------------------------------*/
@@ -347,7 +349,7 @@ ImprovedTube.shortcutIncreasePlaybackSpeed = function (decrease) {
 		newSpeed = (speed - value < 0.1) ? Math.max(Number(speed*0.7).toFixed(2),0.0625) : (speed - value);  
 	} else {
 		// Aligning at 1.0 instead of passing by 1:		
-		if (speed < 1 && speed > 1-ImprovedTube.storage.shortcuts_playback_speed_step ) {newSpeed = 1;  
+		if ( (speed < 1 && speed > 1-ImprovedTube.storage.shortcuts_playback_speed_step) || (speed > 1 && speed < 1+ImprovedTube.storage.shortcuts_playback_speed_step) ) {newSpeed = 1;  
 		// Firefox doesnt limit speed to 16x, we can allow more in Firefox.
 		} else { newSpeed = (speed + value > 16) ? 16 : (speed + value); } 
 	}
@@ -374,8 +376,10 @@ ImprovedTube.shortcutResetPlaybackSpeed = function () {
 4.7.19 GO TO SEARCH BOX
 ------------------------------------------------------------------------------*/
 ImprovedTube.shortcutGoToSearchBox = function () {
+	document.querySelector('input[name="search_query"]')?.click();
 	document.querySelector('input#search')?.click();
 	if (ImprovedTube.originalFocus) { HTMLElement.prototype.focus = originalFocus }
+	document.querySelector('input[name="search_query"]')?.focus();
 	document.querySelector('input#search')?.focus(); 
 };
 /*------------------------------------------------------------------------------

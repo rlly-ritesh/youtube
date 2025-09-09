@@ -156,6 +156,11 @@ ImprovedTube.formatSecond = function (rTime) {
 };
 
 ImprovedTube.playerRemainingDuration = function () {
+	//If is a live stream, do not show remaining time
+	 const button = document.querySelector('button.ytp-live-badge.ytp-button.ytp-live-badge-is-livehead');
+	if (button) 
+		return;	
+
 	var duration = document.querySelector(".ytp-time-duration").innerText;
 	var current = document.querySelector(".ytp-time-current").innerText;
 	document.querySelector('.ytp-time-contents').style.setProperty('display', 'none', 'important');
@@ -476,6 +481,33 @@ ImprovedTube.improvedtubeYoutubeButtonsUnderPlayer = function () {
 				section.insertAdjacentElement('afterend', button)
 			}
 
+			if (this.storage.below_player_keyscene !== false) {
+				var button = document.createElement('button'),
+				svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg'),
+				g = document.createElementNS('http://www.w3.org/2000/svg', 'g'),
+				path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+
+				button.className = 'improvedtube-player-button';
+				button.style.marginRight = '-0.2px';
+				button.dataset.tooltip = 'Key Scene';
+				svg.style.opacity = '.55';
+				svg.setAttributeNS(null, 'viewBox', '0 0 24 24');
+				g.setAttributeNS(null, 'transform', 'translate(5, 0)');				
+				path.setAttributeNS(null, 'd', 'M13 2 L3 14 H10 L8 22 L20 10 H13 L15 2 Z');
+
+				button.onclick = ImprovedTube.jumpToKeyScene;
+
+				g.appendChild(path);
+				svg.appendChild(path);	
+				button.appendChild(svg);
+				if (this.storage.below_player_screenshot !== false) {
+					const screenshotButton = document.querySelector('[data-tooltip="Screenshot"]');
+					screenshotButton?.parentElement?.insertBefore(button, screenshotButton);
+				} else { section.insertAdjacentElement('afterend', button) }
+			}
+
+			let copyVideoUrlButton = this.storage.copy_video_url === true;
+
 			if (this.storage.copy_video_id === true) {
 				var button = document.createElement('button'),
 					svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg'),
@@ -489,8 +521,12 @@ ImprovedTube.improvedtubeYoutubeButtonsUnderPlayer = function () {
 				button.onclick = function () {
 					svg.style.opacity = '1';
 					const videoURL = ImprovedTube.elements.player?.getVideoUrl();
-					const videoId = videoURL.match(ImprovedTube.regex.video_id)?.[1];
-					navigator.clipboard.writeText(videoId);
+					if (copyVideoUrlButton) {
+						navigator.clipboard.writeText(videoURL);
+					} else {
+						const videoId = videoURL.match(ImprovedTube.regex.video_id)?.[1];
+						navigator.clipboard.writeText(videoId);
+					}					
 					button.dataset.tooltip = 'Copied!';
 					setTimeout(function() {
 						button.dataset.tooltip = 'CopyVideoID';
@@ -647,9 +683,8 @@ ImprovedTube.exactUploadDate = function () {
 
         xhr.open("GET", `https://www.googleapis.com/youtube/v3/videos?part=snippet&id=${id}&key=${key}`, true);
         xhr.send();
-        console.log("exact date toggle on");
+        // console.log("exact date toggle on");
     }
-    console.log("exact date test");
 };
 /*------------------------------------------------------------------------------
  HOW LONG AGO THE VIDEO WAS UPLOADED
